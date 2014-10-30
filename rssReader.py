@@ -16,16 +16,23 @@ def loadFeeds(location):
         data = fp.readlines()
     return [x.replace("\n", "") for x in data]
 
-def update():
-    feeds = loadFeeds(".")
-    feeds = getFeeds(feeds)
-    items = []
-    feedItems = parseFeed(feeds[0])
+def update(feed, items):
+    feedItems = parseFeed(feed)
     for x in feedItems:
         if x not in items:
             items.append(x)
     items.sort()
-    for x in items: print x
+    #for x in items: print x
+    return items
     
-update()
- 
+with open("rssItems.pkl", "r") as fp:
+    items = pickle.load(fp)
+print len(items)
+feeds = loadFeeds(".")
+feeds = getFeeds(feeds)
+update(feeds[0], items)
+print len(items)
+items.sort()
+for x in items: print x
+with open("rssItems.pkl", "w") as fp:
+    pickle.dump(items, fp)
