@@ -12,7 +12,7 @@ for i,x in enumerate(items):
         current = x
         items[i].read = True
         break
-dumpItems(".", items)
+dumpItems("cgi-bin", items)
 lock.release()
 
 

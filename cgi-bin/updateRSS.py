@@ -47,21 +47,22 @@ def main():
     lock.break_lock()
     lock = FileLock("./feeds.txt")
     lock.break_lock()
-    feeds = loadFeeds(".")
-    print "Doing initial load of: %s" % feeds
-    feeds = getFeeds(feeds)
-    for x in feeds:
-        temp = parseFeed(x)
-        update(".", temp)
+    #feeds = loadFeeds(".")
+    #print "Doing initial load of: %s" % feeds
+    #feeds = getFeeds(feeds)
+    #for x in feeds:
+    #    temp = parseFeed(x)
+    #    update(".", temp)
     while(True):
         stripOld(".")
         feeds = loadFeeds(".")
         for x in feeds:
-            print "Working on %s" % x
+            print "--------\nWorking on %s" % x
             current = getFeeds([x])[0]
             feedItems = parseFeed(current)
             update(".", feedItems)
-            sleep(20)
+            print "Finished updating %s" % x 
+            sleep(300 / len(feeds))
         
 if __name__ == "__main__":
     main()

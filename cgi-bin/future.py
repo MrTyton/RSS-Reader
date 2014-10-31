@@ -25,8 +25,8 @@ class Future:
             self.__C.wait()
         self.__C.release()
         # We deepcopy __result to prevent accidental tampering with it.
-        a=copy.deepcopy(self.__result)
-        return a
+        #a=copy.deepcopy(self.__result)
+        return self.__result
 
     def Wrapper(self, func, param):
         # Run the actual function, and let us housekeep around it
