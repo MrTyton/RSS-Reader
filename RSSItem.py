@@ -11,11 +11,13 @@ class Item:
     def __lt__(self, other):
         if self.isRead == False and other.isRead == True:
             return True
+        if self.isRead == True and other.isRead == False:
+            return False
         if self.date < other.date:
             return True
         if self.date == other.date:
             return self.name < other.name
-        return false
+        return False
     
     def __gt__(self, other):
         return not (self < other or self == other)
