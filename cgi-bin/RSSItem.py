@@ -1,8 +1,7 @@
-import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 class Item:
-    dateadded = datetime.date(9999, 1, 1)
+    dateadded = datetime(9999, 1, 1, 1, 1, 1)
     read = False
     old = False
     link = ""
@@ -32,16 +31,20 @@ class Item:
         return self > other or self == other
     
     def isOld(self):
-        self.old = (date.today() - self.dateadded) > timedelta(7)
+        self.old = (datetime.today() - self.dateadded) > timedelta(7)
         return self.old
     
     def isRead(self):
         return self.read
     
     def __init__(self, information):
-        if "date_parsed" in information.keys():
-            self.dateadded = date(information["date_parsed"])
-        self.name = information["title"].encode('utf8')
+        if "published_parsed" in information:
+            if information["published_parsed"] is not None:
+                self.dateadded = datetime(*information["published_parsed"][:6])
+		try:
+			self.name = information["title"].encode('utf8')
+		except:
+			self.name= "Unknown Name"
         self.link = information["link"].encode('utf8')
 
     def get_link(self):
