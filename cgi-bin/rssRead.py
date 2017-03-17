@@ -9,14 +9,14 @@ from functions import *
 cgitb.enable()
 
 lock = getFileLock("/tmp", "rssItems.pkl")
-items = loadItems("cgi-bin")
+items = loadItems(".")
 current = None
 for i,x in enumerate(items):
     if not x.isRead():
         current = x
         items[i].read = True
         break
-dumpItems("cgi-bin", items)
+dumpItems(".", items)
 lock.release()
 
 
