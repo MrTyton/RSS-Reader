@@ -48,11 +48,10 @@ def runner(x):
 		print "{} : Something broke with {}: {}".format(datetime.datetime.now().strftime("%B %d, %Y %I:%M%p"), x, e)
 	
 def main():
-
     socket.setdefaulttimeout(30)
     lock = getFileLock("/tmp", "rssItems.pkl")
     global hasher
-    hasher = loadItems("..")
+    hasher = set(loadItems(".."))
     lock.release()
     feeds = loadFeeds("..")
         
@@ -68,7 +67,7 @@ def main():
         items.sort()
         dumpItems("..", items)
         lock.release()
-        
+    
         
 if __name__ == "__main__":
     main()

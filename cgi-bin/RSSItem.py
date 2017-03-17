@@ -21,6 +21,9 @@ class Item:
     def __gt__(self, other):
         return not (self < other or self == other)
     
+    def __hash__(self):
+        return hash((self.link, self.dateadded))
+    
     def __eq__(self, other):
         return self.dateadded == other.dateadded and self.link == other.link
     
