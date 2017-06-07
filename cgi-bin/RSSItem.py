@@ -8,15 +8,15 @@ class Item:
     name = ""
     
     def __lt__(self, other):
+        if self == other: return False
         if self.read == False and other.read == True:
             return True
         if self.read == True and other.read == False:
             return False
-        if self.dateadded < other.dateadded:
-            return True
         if self.dateadded == other.dateadded:
             return self.name < other.name
-        return False
+        return self.dateadded < other.dateadded
+
     
     def __gt__(self, other):
         return not (self < other or self == other)
@@ -44,11 +44,16 @@ class Item:
         if "published_parsed" in information:
             if information["published_parsed"] is not None:
                 self.dateadded = datetime(*information["published_parsed"][:6])
-		try:
-			self.name = information["title"].encode('utf8')
-		except:
-			self.name= "Unknown Name"
-        self.link = information["link"].encode('utf8')
+        if "updated_parsed" in information:
+            if information["updated_parsed"] is not None:
+                self.dateadded = datetime(*information["updated_parsed"][:6]) 
+        if "link" in information:    
+            self.link = information["link"].encode('utf8')
+        try:
+            self.name = information["title"].encode('utf8')
+            if self.name == "": self.name = self.link
+        except:
+            self.name= "Unknown Name"
 
     def get_link(self):
         return self.__link
@@ -59,7 +64,7 @@ class Item:
 
         
     def __str__(self):
-        return "%s %s %s %r" % (self.name, self.link, str(self.dateadded), self.read)
+        return "{}\n\t{}\n\t{}\n\t{}".format(self.name, self.link, str(self.dateadded), "Read" if self.read else "Unread")
     
 
 
