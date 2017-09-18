@@ -1,18 +1,13 @@
 #!/usr/bin/env python
 
 import cgitb
-try:
-	import cPickle as pickle
-except:
-	import pickle
-import RSSItem
 from functions import *
 cgitb.enable()
 
 lock = getFileLock("/tmp", "rssItems.pkl")
 items = loadItems(".")
 current = None
-for i,x in enumerate(items):
+for i, x in enumerate(items):
     if not x.isRead():
         current = x
         items[i].read = True
