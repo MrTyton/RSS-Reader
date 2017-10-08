@@ -153,3 +153,5 @@ feeds.txt
 *.bak
 *.sh
 runner.py
+cgi-bin/RSSupdate
+cgi-bin/RSSupdate.c
