@@ -12,7 +12,10 @@ from string import strip
 # mess with this later
 url_ignores = re.compile('(?P<url>.*?),(?P<filters>.*)')
 
-hasher = []
+
+lock = getFileLock("/tmp", "rssItems.pkl")
+hasher = set(loadItems(".."))
+lock.release()
 
 
 def loadFeeds(location):
@@ -73,10 +76,6 @@ def runner(x):
 
 def main():
     socket.setdefaulttimeout(30)
-    lock = getFileLock("/tmp", "rssItems.pkl")
-    global hasher
-    hasher = set(loadItems(".."))
-    lock.release()
     feeds = loadFeeds("..")
     pooler = Pool()
     results = pooler.map(runner, feeds)
