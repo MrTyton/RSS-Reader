@@ -8,6 +8,7 @@ import datetime
 import re
 import urllib2
 from string import strip
+import cfscrape
 
 # mess with this later
 url_ignores = re.compile('(?P<url>.*?),(?P<filters>.*)')
@@ -60,13 +61,21 @@ def runner(x):
             url = x
             ignores = set()
             includes = set()
-        current = feedparser.parse(url)
-        if not current.entries and current.bozo == 1:
-            if "undefined entity" in str(current.bozo_exception):
-                with urllib2.urlopen(url) as req:
-                    datum = req.read()
-                    datum = datum.decode("utf-8", "ignore")
-                    current = feedparser.parse(datum)
+        try:
+            current = feedparser.parse(url)
+            if not current.entries and current.bozo == 1:
+                if "undefined entity" in str(current.bozo_exception):
+                    with urllib2.urlopen(url) as req:
+                        datum = req.read()
+                        datum = datum.decode("utf-8", "ignore")
+                        current = feedparser.parse(datum)
+        except urllib2.HTTPError as err:
+            if err.code == 403:
+                scraper = cfscrape.create_scraper()
+                data = scraper.get(url)
+                current = feedparser.parse(data.content)
+            else:
+                raise
         feedItems = map(Item, current["items"])
         return update(feedItems, ignores, includes)
     except Exception as e:
