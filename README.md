@@ -4,3 +4,5 @@ Self Running Python RSS Reader script with an HTML page run through cgi-python t
 Written to emulate the "Next Unread Item" feature of Google Reader (RIP)
 
 feeds.txt goes in parent folder, as well as rssItems.pkl (pickle file with empty list in it)
+
+Requirements will be posted soon, as well as more documentation and setup.
